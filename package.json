@@ -1,0 +1,178 @@
+{
+  "name": "trace",
+  "displayName": "Trace: AI Debugging Agent",
+  "description": "An open-source AI debugging agent",
+  "icon": "assets/extension-icon.png",
+  "publisher": "trace",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adilshaik/trace"
+  },
+  "version": "0.0.1",
+  "engines": {
+    "vscode": "^1.88.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "trace-chat-sidebar-view",
+          "title": "Trace",
+          "icon": "assets/ghost.svg"
+        }
+      ]
+    },
+    "views": {
+      "trace-chat-sidebar-view": [
+        {
+          "type": "webview",
+          "id": "trace-chat",
+          "name": "AI Debugging Agent",
+          "icon": "assets/ghost.svg",
+          "contextualTitle": "AI Debugging Agent"
+        }
+      ]
+    },
+    "configuration": {
+      "type": "object",
+      "title": "trace",
+      "properties": {
+        "openaiKey": {
+          "type": "string"
+        },
+        "azure.openai.apiKey": {
+          "type": "string"
+        },
+        "azure.openai.baseURL": {
+          "type": "string"
+        },
+        "trace.repro.buildCommand": {
+          "type": "string"
+        },
+        "trace.repro.buildReadyText": {
+          "description": "Text to match stdout or stderr to indicate the build process is ready.",
+          "type": "string"
+        },
+        "trace.repro.buildInactivityTimeout": {
+          "description": "If there are no new logs after the timeout duration, the build is assumed to be completed and ready. Timeout is in milliseconds.",
+          "type": [
+            "number",
+            "null"
+          ],
+          "default": null
+        },
+        "trace.repro.buildProcessTimeout": {
+          "description": "Max time build processes can run for. In milliseconds.",
+          "type": [
+            "number",
+            "null"
+          ],
+          "default": null
+        },
+        "trace.repro.testInactivityTimeout": {
+          "description": "If there are no new logs after the timeout duration, the test process is assumed to be completed and ready. Timeout is in milliseconds.",
+          "type": [
+            "number",
+            "null"
+          ],
+          "default": null
+        },
+        "trace.repro.testProcessTimeout": {
+          "description": "Max time test processes can run for. In milliseconds.",
+          "type": [
+            "number",
+            "null"
+          ],
+          "default": null
+        },
+        "trace.repro.testCommand": {
+          "type": "string"
+        },
+        "trace.repro.expectedInstruction": {
+          "type": "string"
+        },
+        "trace.repro.expectedStatus": {
+          "type": "string"
+        },
+        "trace.repro.expectedBody": {
+          "type": "string"
+        }
+      }
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "trace.resetProgress",
+          "when": "view == trace-chat",
+          "group": "navigation"
+        },
+        {
+          "command": "trace.openSettings",
+          "when": "view == trace-chat"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "trace.openSettings",
+        "title": "Settings",
+        "category": "Trace"
+      },
+      {
+        "command": "trace.resetProgress",
+        "title": "Reset Progress",
+        "category": "Trace",
+        "icon": {
+          "light": "assets/light/discard.svg",
+          "dark": "assets/dark/discard.svg"
+        }
+      }
+    ]
+  },
+  "scripts": {
+    "install:all": "npm install && cd webview-ui && npm install",
+    "watch:webview": "cd webview-ui && npm run watch",
+    "build:webview": "cd webview-ui && npm run build",
+    "vscode:prepublish": "npm run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "npm run build:webview && webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "18.x",
+    "@types/vscode": "^1.88.0",
+    "@typescript-eslint/eslint-plugin": "^7.4.0",
+    "@typescript-eslint/parser": "^7.4.0",
+    "@vscode/codicons": "^0.0.35",
+    "@vscode/test-cli": "^0.0.8",
+    "@vscode/test-electron": "^2.3.9",
+    "eslint": "^8.57.0",
+    "file-loader": "^6.2.0",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.3.3",
+    "webpack": "^5.91.0",
+    "webpack-cli": "^5.1.4"
+  },
+  "dependencies": {
+    "@bany/curl-to-json": "^1.2.8",
+    "js-yaml": "^4.1.0",
+    "openai": "^4.35.0",
+    "tree-kill": "^1.2.2",
+    "un-eval": "^1.2.0",
+    "vscode-regexpp": "^3.1.0"
+  }
+}
