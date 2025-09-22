@@ -72,8 +72,7 @@ Always inspect the output of `Verify` to see if there are any obvious issues. He
 
 1. The build / run process is already running in the terminal, causing a conflict in the port. The fix is to kill the process running in your local terminal.
 2. `Verify` needs to wait for the build / run step to complete before running the test step. A build step is complete if it either exits OR the the log matches any of these patterns in [src/tools/verifier.ts](/src/tools/verifier.ts#L151).\
-   If your build step's log does not match any of these, you can configure your own by clicking "Advanced Settings" under "Specify Repro Steps" and fill in the "Build Ready Text" section.\
-   <img src="media/build-ready-text.png" alt="Settings UI to configure build ready text" width="300" />
+   If your build step's log does not match any of these, you can configure your own by clicking "Advanced Settings" under "Specify Repro Steps" and fill in the "Build Ready Text" section.
 3. The build process takes a long time to complete. This is an unavoidable problem with no easy solution.
 
 ### How do I customize the prompts?
